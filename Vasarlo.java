@@ -1,12 +1,10 @@
-import java.io.File;  // Import the File class
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.Scanner;
 
-
-public class Vasarlo implements KozosResz{
+public class Vasarlo implements Kozos{
     public final String nev;
     protected String igazolvanySzam;
-
     private int penz;
 
 
@@ -22,38 +20,42 @@ public class Vasarlo implements KozosResz{
 
 
     public void penztKolt(int mennyit){
-        if (this.penz < mennyit) {
-            throw new SajatExcept("Nincs eleg penz!");
+        if(mennyit > this.penz){
+             throw new SajatError("Nincs eleg penz!");
         }
-        else {
+        else{
             this.penz -= mennyit;
         }
 
-
     }
 
-    public void vagyontKiszamit(String filename) {
 
-        try {
+    public void vagyontKiszamit(String filename){
+
+        try{
+
             File file = new File(filename);
-            Scanner read = new Scanner(file);
-            while (read.hasNextLine()) {
-                if (read.nextLine().split(";")[1].equals("BEVETEL")) {
-                    this.penz += Integer.parseInt(read.nextLine().split(";")[2]);
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()){
+                String line = reader.nextLine();
+                String[] adatok = line.split(";");
+                String tipus = adatok[1];
+                int mennyi = Integer.parseInt(adatok[2]);
 
-                } else {
-                    this.penz -= Integer.parseInt(read.nextLine().split(";")[2]);
+                if(tipus.equals("BEVITEL")){
+                    this.penz += mennyi;
+                }
+
+                if(tipus.equals("KIADAS")){
+                    this.penz -= mennyi;
                 }
             }
-            read.close();
+
+            reader.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
 
     }
-
-
 }
-
-

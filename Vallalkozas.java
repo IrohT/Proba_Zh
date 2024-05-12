@@ -1,7 +1,7 @@
 
 import java.util.*;
 
-public class Vallalkozas implements KozosResz{
+public class Vallalkozas implements Kozos{
     private final List<Integer> befektetesek = new ArrayList<>();
 
     public int getPenz() {
@@ -14,9 +14,9 @@ public class Vallalkozas implements KozosResz{
         return osszeg;
     }
 
-    public void penztKolt(int mennyit){
+    public void penztKolt(int mennyit) {
         if (getPenz() < mennyit) {
-            throw new SajatExcept("Nincs eleg penz!");
+            throw new SajatError("Nincs eleg penz!");
         }
 
         Iterator<Integer> iterator = befektetesek.iterator();
@@ -29,4 +29,5 @@ public class Vallalkozas implements KozosResz{
         befektetesek.add(-mennyit);
     }
 }
+
 
